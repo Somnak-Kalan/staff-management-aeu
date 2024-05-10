@@ -1,0 +1,28 @@
+const fs = require('fs');
+
+// Read existing JSON data from file
+const readDataFromFile = () => {
+  try {
+    const jsonData = fs.readFileSync('data.json', 'utf8');
+    return JSON.parse(jsonData);
+  } catch (err) {
+    console.error('Error reading file:', err);
+    return [];
+  }
+};
+
+// Add new data to the existing JSON data
+const addDataToFile = (newData) => {
+  const existingData = readDataFromFile();
+  const updatedData = [...existingData, newData];
+  try {
+    fs.writeFileSync('data.json', JSON.stringify(updatedData, null, 2), 'utf8');
+    console.log('Data added to file successfully.');
+  } catch (err) {
+    console.error('Error writing file:', err);
+  }
+};
+
+// Usage example
+const newData = { id: 1, name: 'New Item' };
+addDataToFile(newData);

@@ -1,0 +1,11 @@
+{
+    "title": "department",
+    "content": [
+        {
+            "id": 0,
+            "department_name": "Information Technology",
+            "university_name": "AEU",
+            "description": "Teching && and searching"
+        }
+    ]
+}
