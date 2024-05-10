@@ -44,6 +44,8 @@ export default function App() {
     }
     if (storedLoggedIn === null || storedLoggedIn === undefined) {
       window.location.href = "/login";
+      localStorage.setItem("isLoggedIn", isLoggedIn);
+
       return;
     }
 
