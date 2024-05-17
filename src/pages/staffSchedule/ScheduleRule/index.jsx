@@ -96,6 +96,7 @@ const Staff = () => {
             size="small"
             scroll={{ x: "max-content" }}
             columns={columns}
+            bordered
             dataSource={data}
           />
         </Card>

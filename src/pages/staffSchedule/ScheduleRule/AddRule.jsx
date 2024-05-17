@@ -10,13 +10,43 @@ const App = (props) => {
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
 
-  const onFinish = async (values) => {
+  const onFinish = async () => {
     try {
       await form.validateFields();
-      setOpen(false);
-      success({ content: "Add Success" });
+      const values = form.getFieldsValue();
+      const {
+        rule_name,
+        // break_time,
+        // duration,
+        rule_type,
+        duration_break_time,
+      } = values;
+
+      const doc = {
+        rule_name: rule_name,
+        rule_type: rule_type,
+        duration_break_time: duration_break_time
+          ? {
+              start: dayjs(duration_break_time[0], "HH:mm").format("HH:mm"),
+              end: dayjs(duration_break_time[1], "HH:mm").format("HH:mm"),
+            }
+          : duration_break_time,
+        // duration: type !== "break_time" ? duration : 0,
+        // break_time: break_time
+        //   ? {
+        //       start: dayjs(break_time[0], "HH:mm").format("HH:mm"),
+        //       end: dayjs(break_time[1], "HH:mm").format("HH:mm"),
+        //     }
+        //   : {},
+      };
+      console.log(doc, "test add");
+      // Add_Department(doc).then((res) => {
+      //   Get_Department();
+      //   setOpen(false);
+      //   success({ content: "Add Success" });
+      // });
     } catch {
-      warning({ content: "Add Success" });
+      console.log("error");
     }
   };
 
@@ -94,27 +124,39 @@ const App = (props) => {
             </Form.Item>
           </Col>
           <Col xs={24} sm={24}>
-            <Form.Item
-              label="Duration(min)/Break Time"
-              name="duration_break_time"
-              labelCol={{ span: 24 }}
-              rules={[
-                {
-                  required: true,
-                  message: "field require!",
-                },
-              ]}
-            >
-              {isBreakTime ? (
+            {isBreakTime ? (
+              <Form.Item
+                label="Duration(min)/Break Time"
+                name="break_time"
+                labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "field require!",
+                  },
+                ]}
+              >
                 <TimePicker.RangePicker
                   style={{ width: "100%" }}
                   inputStyle={{ width: "100%" }}
                   format="HH:mm"
                 />
-              ) : (
+              </Form.Item>
+            ) : (
+              <Form.Item
+                label="Duration(min)/Break Time"
+                name="duration"
+                labelCol={{ span: 24 }}
+                rules={[
+                  {
+                    required: true,
+                    message: "field require!",
+                  },
+                ]}
+              >
                 <Input placeholder="duration(min)" />
-              )}
-            </Form.Item>
+              </Form.Item>
+            )}
           </Col>
         </Row>
       </Form>
