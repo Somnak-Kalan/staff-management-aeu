@@ -1,15 +1,18 @@
-import { Card, Row, Col, Table, Button, message } from "antd";
-import { useState } from "react";
+import { Card, Row, Col, Table, Button, message, Breadcrumb } from "antd";
+import { useEffect, useState } from "react";
 import {
   PlusCircleOutlined,
   DeleteOutlined,
   FormOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 //form
 import AddRequestLeave from "./AddRequestLeave";
 //end form
+import { Fetch_Leave_Type } from "../../../server/report/requestLeave/requestLeave";
 const Staff = () => {
   const [add_open, setAddOpen] = useState(false);
+  const [request_leave, setRequestLeave] = useState([]);
   //notification
   const success = ({ content }) => {
     message.success({
@@ -21,22 +24,32 @@ const Staff = () => {
       content: content,
     });
   };
+  const Get_Request_Leave = () => {
+    Fetch_Leave_Type().then((res) => {
+      console.log(res, " leave type");
+      setRequestLeave(res);
+    });
+  };
+  useEffect(() => {
+    Get_Request_Leave();
+  }, []);
   //end notification
-  const data = [
-    {
-      full_name: "somnak kalan",
-      employee_no: "V-1",
-      department: "Information Technology ",
-      position: "Teaching",
-      subject: "Javascript ",
-      type: "Early ",
-      from: "2-5-2024 ",
-      to: "2-5-2024",
-      day_leave: "1 ",
-      reason: "Sick ",
-      status: "pending",
-    },
-  ];
+  const data = request_leave || [];
+  // const data = [
+  //   {
+  //     full_name: "somnak kalan",
+  //     employee_no: "V-1",
+  //     department: "Information Technology ",
+  //     position: "Teaching",
+  //     subject: "Javascript ",
+  //     type: "Early ",
+  //     from: "2-5-2024 ",
+  //     to: "2-5-2024",
+  //     day_leave: "1 ",
+  //     reason: "Sick ",
+  //     status: "pending",
+  //   },
+  // ];
   const columns = [
     {
       title: "No",
@@ -48,48 +61,48 @@ const Staff = () => {
     },
     {
       title: "Full Name",
-      dataIndex: "full_name",
-      key: "full_name",
+      dataIndex: "staff_name",
+      key: "staff_name",
     },
     {
-      title: "Employee ID",
-      dataIndex: "employee_no",
-      key: "employee_no",
+      title: "Staff Code",
+      dataIndex: "staff_code",
+      key: "staff_code",
     },
     {
       title: "Department",
-      dataIndex: "department",
-      key: "department",
+      dataIndex: "department_name",
+      key: "department_name",
     },
     {
       title: "Position",
-      dataIndex: "position",
-      key: "position",
+      dataIndex: "position_name",
+      key: "position_name",
     },
     {
       title: "subject",
-      dataIndex: "subject",
-      key: "subject",
+      dataIndex: "subject_name",
+      key: "subject_name",
     },
     {
       title: "Leave Type",
-      dataIndex: "type",
-      key: "type",
+      dataIndex: "leave_type_name",
+      key: "leave_type_name",
     },
     {
       title: "From",
-      dataIndex: "from",
-      key: "from",
+      dataIndex: "from_date",
+      key: "from_date",
     },
     {
       title: "To",
-      dataIndex: "to",
-      key: "to",
+      dataIndex: "to_date",
+      key: "to_date",
     },
     {
       title: "Day",
-      dataIndex: "day_leave",
-      key: "day_leave",
+      dataIndex: "total_day",
+      key: "total_day",
     },
     {
       title: "Reason",
@@ -142,34 +155,55 @@ const Staff = () => {
     },
   ];
   return (
-    <Row>
-      <Col sm={24}>
-        <Card
-          title="Request Leave"
-          extra={
-            <Button type="primary" onClick={() => setAddOpen(true)}>
-              <PlusCircleOutlined />
-              Add Request Leave
-            </Button>
-          }
-        >
-          {/* add department */}
-          <AddRequestLeave
-            open={add_open}
-            setOpen={setAddOpen}
-            success={success}
-            warning={warning}
-          />
-          {/* end add department */}
-          <Table
-            size="small"
-            scroll={{ x: "max-content" }}
-            columns={columns}
-            dataSource={data}
-          />
-        </Card>
-      </Col>
-    </Row>
+    <>
+      <Breadcrumb
+        style={{ position: "fixed", top: "80px", left: "250px" }}
+        items={[
+          {
+            title: (
+              <HomeOutlined
+                onClick={() => {
+                  navigate("/");
+                }}
+              />
+            ),
+          },
+          {
+            title: "Request Leave",
+          },
+        ]}
+      />
+      <Row>
+        <Col sm={24}>
+          <Card
+            title="Request Leave"
+            extra={
+              <Button type="primary" onClick={() => setAddOpen(true)}>
+                <PlusCircleOutlined />
+                Add Request Leave
+              </Button>
+            }
+          >
+            {/* add department */}
+            <AddRequestLeave
+              open={add_open}
+              setOpen={setAddOpen}
+              success={success}
+              warning={warning}
+              Get_Request_Leave={Get_Request_Leave}
+            />
+            {/* end add department */}
+            <Table
+              size="small"
+              scroll={{ x: "max-content" }}
+              columns={columns}
+              bordered
+              dataSource={data}
+            />
+          </Card>
+        </Col>
+      </Row>
+    </>
   );
 };
 

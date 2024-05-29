@@ -1,11 +1,32 @@
-import { Card, Row, Col, Table, Button, message } from "antd";
-import { useState } from "react";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import {
+  Card,
+  Row,
+  Col,
+  Table,
+  Button,
+  message,
+  Breadcrumb,
+  Popconfirm,
+} from "antd";
+import { useEffect, useState } from "react";
+import {
+  PlusCircleOutlined,
+  HomeOutlined,
+  QuestionCircleOutlined,
+  DeleteOutlined,
+  FormOutlined,
+} from "@ant-design/icons";
 //form
 import AddShiftForm from "./AddShift";
+import UpdateShift from "./UpdateShift";
 //end form
+import { Fetch_Shift, Delete_Shift } from "../../../server/staffSchedule/shift";
 const Staff = () => {
   const [add_open, setAddOpen] = useState(false);
+  const [update_open, setUpdateOpen] = useState(false);
+  const [shift, setShift] = useState([]);
+  const [props_data, setPropsData] = useState();
+
   //notification
   const success = ({ content }) => {
     message.success({
@@ -17,120 +38,279 @@ const Staff = () => {
       content: content,
     });
   };
-  //end notification
-  const data = [
+
+  const Get_Shift = () => {
+    Fetch_Shift().then((res) => {
+      setShift(res);
+      console.log(res);
+    });
+  };
+  const on_Delete = (id) => {
+    Delete_Shift(id).then(() => {
+      success({ content: "Remove Success" });
+      Get_Shift();
+    });
+  };
+  const on_Get_Data_Record = async (data) => {
+    await setUpdateOpen(true);
+    await setPropsData(data);
+  };
+  useEffect(() => {
+    Get_Shift();
+  }, []);
+  //set default data
+  const default_data = [
     {
-      schedule_name: "Monday-Friday",
-      monday: [
-        {
+      id: 0,
+      shift_name: "Monday-Friday",
+      // attendance:{}
+      attendance_rule_ids: [1],
+      attendance: {
+        monday: {
           morning: { start: "8:00 AM", end: "12:00 PM" },
           afternoon: { start: "13:00 PM", end: "17:00 PM" },
         },
-      ],
-      tuesday: [
-        {
+
+        tuesday: {
           morning: { start: "8:00 AM", end: "12:00 PM" },
           afternoon: { start: "13:00 PM", end: "17:00 PM" },
         },
-      ],
-      wednesday: [
-        {
+
+        wednesday: {
           morning: { start: "8:00 AM", end: "12:00 PM" },
           afternoon: { start: "13:00 PM", end: "17:00 PM" },
         },
-      ],
-      thursday: [
-        {
+
+        thursday: {
           morning: { start: "8:00 AM", end: "12:00 PM" },
           afternoon: { start: "13:00 PM", end: "17:00 PM" },
         },
-      ],
-      friday: [
-        {
+
+        friday: {
           morning: { start: "8:00 AM", end: "12:00 PM" },
           afternoon: { start: "13:00 PM", end: "17:00 PM" },
         },
-      ],
+
+        tuesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        wednesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        thursday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        friday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        // saturday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // sunday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+      },
     },
-    // {
-    //   tuesday: [
-    //     {
-    //       morning: { start: "8:00 AM", end: "12:00 PM" },
-    //       afternoon: { start: "13:00 PM", end: "17:00 PM" },
-    //     },
-    //   ],
-    // },
-    // {
-    //   wednesday: [
-    //     {
-    //       morning: { start: "8:00 AM", end: "12:00 PM" },
-    //       afternoon: { start: "13:00 PM", end: "17:00 PM" },
-    //     },
-    //   ],
-    // },
-    // {
-    //   thursday: [
-    //     {
-    //       morning: { start: "8:00 AM", end: "12:00 PM" },
-    //       afternoon: { start: "13:00 PM", end: "17:00 PM" },
-    //     },
-    //   ],
-    // },
-    // {
-    //   friday: [
-    //     {
-    //       morning: { start: "8:00 AM", end: "12:00 PM" },
-    //       afternoon: { start: "13:00 PM", end: "17:00 PM" },
-    //     },
-    //   ],
-    // },
-    // {
-    //   saturday: [
-    //     {
-    //       morning: { start: "8:00 AM", end: "12:00 PM" },
-    //       afternoon: { start: "13:00 PM", end: "17:00 PM" },
-    //     },
-    //   ],
-    // },
-    // {
-    //   sunday: [
-    //     {
-    //       morning: { start: "8:00 AM", end: "12:00 PM" },
-    //       afternoon: { start: "13:00 PM", end: "17:00 PM" },
-    //     },
-    //   ],
-    // },
+    {
+      id: 1,
+      shift_name: "Monday-Saturday",
+      // attendance:{}
+      attendance_rule_ids: [1],
+      attendance: {
+        monday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        tuesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        wednesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        thursday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        friday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        tuesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        wednesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        thursday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        friday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        saturday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        // sunday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+      },
+    },
+    {
+      id: 2,
+      shift_name: "Monday-Wednesday",
+      // attendance:{}
+      attendance_rule_ids: [1],
+      attendance: {
+        monday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        tuesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        wednesday: {
+          morning: { start: "8:00 AM", end: "12:00 PM" },
+          afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        },
+
+        // thursday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // friday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // tuesday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // wednesday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // thursday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // friday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // saturday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+
+        // sunday: {
+        //   morning: { start: "8:00 AM", end: "12:00 PM" },
+        //   afternoon: { start: "13:00 PM", end: "17:00 PM" },
+        // },
+      },
+    },
   ];
+  useEffect(() => {
+    let existingData = localStorage.getItem("shift");
+    existingData = existingData ? JSON.parse(existingData) : [];
+
+    const notExisting = default_data.filter((el) => {
+      return !existingData.some((existing) => existing.id === el.id);
+    });
+    const updatedData = [...existingData];
+    if (notExisting.length > 0) {
+      Array.isArray(notExisting) &&
+        notExisting.map((el) => {
+          updatedData.push(el);
+        });
+    }
+    localStorage.setItem("shift", JSON.stringify(updatedData));
+  }, []);
+  //set default data
+
+  const data = shift;
+
   const columns = [
     {
       title: "No",
       dataIndex: "no",
       key: "no",
+      with: 50,
+      align: "center",
       render: (_, recorder, index) => index + 1,
     },
     {
       title: "Schedule Name ",
-      dataIndex: "schedule_name",
-      key: "schedule_name",
+      dataIndex: "shift_name",
+      key: "shift_name",
     },
     {
       title: "Monday",
       dataIndex: "monday",
       key: "monday",
       render: (_, record) => {
-        if (record.monday && record.monday.length > 0) {
-          const { morning, afternoon } = record.monday[0];
+        if (record.attendance.monday) {
+          const { morning, afternoon } = record.attendance.monday;
+
+          const isValidTime = (time) => time && time !== "Invalid Date";
+
           return (
             <>
               <div>
-                <span>
-                  {morning?.start} - {morning?.end}
-                </span>
+                {isValidTime(morning?.start) && isValidTime(morning?.end) ? (
+                  <span>
+                    {morning.start} - {morning.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               <div>
-                <span>
-                  {afternoon?.start} - {afternoon?.end}
-                </span>
+                {isValidTime(afternoon?.start) &&
+                isValidTime(afternoon?.end) ? (
+                  <span>
+                    {afternoon.start} - {afternoon.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
             </>
           );
@@ -145,19 +325,31 @@ const Staff = () => {
       dataIndex: "tuesday",
       key: "tuesday",
       render: (_, record) => {
-        if (record.tuesday && record.tuesday.length > 0) {
-          const { morning, afternoon } = record.tuesday[0];
+        if (record.attendance.tuesday) {
+          const { morning, afternoon } = record.attendance.tuesday;
+
+          const isValidTime = (time) => time && time !== "Invalid Date";
+
           return (
             <>
               <div>
-                <span>
-                  {morning?.start} - {morning?.end}
-                </span>
+                {isValidTime(morning?.start) && isValidTime(morning?.end) ? (
+                  <span>
+                    {morning.start} - {morning.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               <div>
-                <span>
-                  {afternoon?.start} - {afternoon?.end}
-                </span>
+                {isValidTime(afternoon?.start) &&
+                isValidTime(afternoon?.end) ? (
+                  <span>
+                    {afternoon.start} - {afternoon.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
             </>
           );
@@ -171,19 +363,31 @@ const Staff = () => {
       dataIndex: "wednesday",
       key: "wednesday",
       render: (_, record) => {
-        if (record.wednesday && record.wednesday.length > 0) {
-          const { morning, afternoon } = record.wednesday[0];
+        if (record.attendance.wednesday) {
+          const { morning, afternoon } = record.attendance.wednesday;
+
+          const isValidTime = (time) => time && time !== "Invalid Date";
+
           return (
             <>
               <div>
-                <span>
-                  {morning?.start} - {morning?.end}
-                </span>
+                {isValidTime(morning?.start) && isValidTime(morning?.end) ? (
+                  <span>
+                    {morning.start} - {morning.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               <div>
-                <span>
-                  {afternoon?.start} - {afternoon?.end}
-                </span>
+                {isValidTime(afternoon?.start) &&
+                isValidTime(afternoon?.end) ? (
+                  <span>
+                    {afternoon.start} - {afternoon.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
             </>
           );
@@ -197,19 +401,31 @@ const Staff = () => {
       dataIndex: "thursday",
       key: "thursday",
       render: (_, record) => {
-        if (record.thursday && record.thursday.length > 0) {
-          const { morning, afternoon } = record.thursday[0];
+        if (record.attendance.thursday) {
+          const { morning, afternoon } = record.attendance.thursday;
+
+          const isValidTime = (time) => time && time !== "Invalid Date";
+
           return (
             <>
               <div>
-                <span>
-                  {morning?.start} - {morning?.end}
-                </span>
+                {isValidTime(morning?.start) && isValidTime(morning?.end) ? (
+                  <span>
+                    {morning.start} - {morning.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               <div>
-                <span>
-                  {afternoon?.start} - {afternoon?.end}
-                </span>
+                {isValidTime(afternoon?.start) &&
+                isValidTime(afternoon?.end) ? (
+                  <span>
+                    {afternoon.start} - {afternoon.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
             </>
           );
@@ -223,19 +439,31 @@ const Staff = () => {
       dataIndex: "friday",
       key: "friday",
       render: (_, record) => {
-        if (record.friday && record.friday.length > 0) {
-          const { morning, afternoon } = record.friday[0];
+        if (record.attendance.friday) {
+          const { morning, afternoon } = record.attendance.friday;
+
+          const isValidTime = (time) => time && time !== "Invalid Date";
+
           return (
             <>
               <div>
-                <span>
-                  {morning?.start} - {morning?.end}
-                </span>
+                {isValidTime(morning?.start) && isValidTime(morning?.end) ? (
+                  <span>
+                    {morning.start} - {morning.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               <div>
-                <span>
-                  {afternoon?.start} - {afternoon?.end}
-                </span>
+                {isValidTime(afternoon?.start) &&
+                isValidTime(afternoon?.end) ? (
+                  <span>
+                    {afternoon.start} - {afternoon.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
             </>
           );
@@ -249,19 +477,31 @@ const Staff = () => {
       dataIndex: "saturday",
       key: "saturday",
       render: (_, record) => {
-        if (record.saturday && record.saturday.length > 0) {
-          const { morning, afternoon } = record.saturday[0];
+        if (record.attendance.saturday) {
+          const { morning, afternoon } = record.attendance.saturday;
+
+          const isValidTime = (time) => time && time !== "Invalid Date";
+
           return (
             <>
               <div>
-                <span>
-                  {morning?.start} - {morning?.end}
-                </span>
+                {isValidTime(morning?.start) && isValidTime(morning?.end) ? (
+                  <span>
+                    {morning.start} - {morning.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               <div>
-                <span>
-                  {afternoon?.start} - {afternoon?.end}
-                </span>
+                {isValidTime(afternoon?.start) &&
+                isValidTime(afternoon?.end) ? (
+                  <span>
+                    {afternoon.start} - {afternoon.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
             </>
           );
@@ -275,19 +515,31 @@ const Staff = () => {
       dataIndex: "sunday",
       key: "sunday",
       render: (_, record) => {
-        if (record.sunday && record.sunday.length > 0) {
-          const { morning, afternoon } = record.sunday[0];
+        if (record.attendance.sunday) {
+          const { morning, afternoon } = record.attendance.sunday;
+
+          const isValidTime = (time) => time && time !== "Invalid Date";
+
           return (
             <>
               <div>
-                <span>
-                  {morning?.start} - {morning?.end}
-                </span>
+                {isValidTime(morning?.start) && isValidTime(morning?.end) ? (
+                  <span>
+                    {morning.start} - {morning.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
               <div>
-                <span>
-                  {afternoon?.start} - {afternoon?.end}
-                </span>
+                {isValidTime(afternoon?.start) &&
+                isValidTime(afternoon?.end) ? (
+                  <span>
+                    {afternoon.start} - {afternoon.end}
+                  </span>
+                ) : (
+                  <span></span>
+                )}
               </div>
             </>
           );
@@ -296,36 +548,93 @@ const Staff = () => {
         }
       },
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      width: 100,
+      align: "center",
+      render: (_, recorder) => (
+        <>
+          <span
+            style={{ cursor: "pointer", marginLeft: "2px", marginRight: "2px" }}
+          >
+            <Popconfirm
+              title="Remove the task"
+              description="Are you sure to remove this record?"
+              onConfirm={() => on_Delete(recorder.id)}
+              icon={
+                <QuestionCircleOutlined
+                  style={{
+                    color: "red",
+                  }}
+                />
+              }
+            >
+              <DeleteOutlined style={{ color: "red", fontSize: "15px" }} />
+            </Popconfirm>
+          </span>
+          {/* <span
+            style={{ cursor: "pointer", marginLeft: "2px", marginRight: "2px" }}
+            onClick={() => on_Get_Data_Record(recorder)}
+          >
+            <FormOutlined style={{ color: "blue", fontSize: "15px" }} />
+          </span> */}
+        </>
+      ),
+    },
   ];
   return (
-    <Row>
-      <Col sm={24}>
-        <Card
-          title="Schedule"
-          extra={
-            <Button type="primary" onClick={() => setAddOpen(true)}>
-              <PlusCircleOutlined />
-              Add Schedule
-            </Button>
-          }
-        >
-          {/* add department */}
-          <AddShiftForm
-            open={add_open}
-            setOpen={setAddOpen}
-            success={success}
-            warning={warning}
-          />
-          {/* end add department */}
-          <Table
-            size="small"
-            scroll={{ x: "max-content" }}
-            columns={columns}
-            dataSource={data}
-          />
-        </Card>
-      </Col>
-    </Row>
+    <>
+      <Breadcrumb
+        style={{ position: "fixed", top: "80px", left: "250px" }}
+        items={[
+          {
+            title: (
+              <HomeOutlined
+                onClick={() => {
+                  navigate("/");
+                }}
+              />
+            ),
+          },
+          {
+            title: "Schedule",
+          },
+        ]}
+      />
+      <Row>
+        <Col sm={24}>
+          <Card
+            title="Schedule"
+            extra={
+              <Button type="primary" onClick={() => setAddOpen(true)}>
+                <PlusCircleOutlined />
+                Add Schedule
+              </Button>
+            }
+          >
+            {/* add department */}
+            <AddShiftForm
+              open={add_open}
+              setOpen={setAddOpen}
+              success={success}
+              warning={warning}
+              Get_Shift={Get_Shift}
+            />
+            {/* end add department */}
+
+            <Table
+              size="small"
+              scroll={{ x: "max-content" }}
+              columns={columns}
+              bordered
+              dataSource={data}
+            />
+          </Card>
+        </Col>
+      </Row>
+    </>
   );
 };
 

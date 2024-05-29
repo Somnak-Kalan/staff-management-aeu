@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Form, Input, Row, Col, Modal, Select, Button, TimePicker } from "antd";
 import dayjs from "dayjs";
-import { Add_Schedule_Rule } from "../../../server/staffSchedule/scheduleRule";
+import { Update_Schedule_Rule } from "../../../server/staffSchedule/scheduleRule";
 const App = (props) => {
-  const { open, setOpen, success, warning, Get_Schedule_Rule } = props;
+  const { open, setOpen, success, warning, Get_Schedule_Rule, props_data } =
+    props;
   const [form] = Form.useForm();
   const [rule_type, setRuleType] = useState();
   const [isBreakTime, setIsBreakTime] = useState(false);
@@ -15,9 +16,10 @@ const App = (props) => {
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
-      const { rule_name, break_time, duration, rule_type } = values;
-
+      const { id, rule_name, break_time, duration, rule_type } = values;
+      console.log(values, "update");
       const doc = {
+        id: id,
         rule_name: rule_name,
         rule_type: rule_type,
 
@@ -29,13 +31,13 @@ const App = (props) => {
             }
           : "",
       };
-      Add_Schedule_Rule(doc).then(() => {
+      Update_Schedule_Rule(doc).then(() => {
         setOpen(false);
         Get_Schedule_Rule();
         success({ content: "Add Success" });
       });
     } catch {
-      console.log("error");
+      warning({ content: "Add Fail" });
     }
   };
 
@@ -47,7 +49,25 @@ const App = (props) => {
   useEffect(() => {
     form.setFieldsValue({ duration_break_time: undefined }); // Reset the field value when rule_type changes
   }, [rule_type]);
-
+  useEffect(() => {
+    form.setFieldsValue({
+      ...props_data,
+      break_time: props_data
+        ? [
+            dayjs(props_data.break_time.start, "HH:mm"),
+            dayjs(props_data.break_time.end, "HH:mm"),
+          ]
+        : "",
+    });
+    setRuleType(props_data?.rule_type);
+  }, [form, props_data]);
+  useEffect(() => {
+    if (rule_type === "break_time") {
+      setIsBreakTime(true);
+    } else {
+      setIsBreakTime(false);
+    }
+  }, [rule_type]);
   return (
     <Modal
       title="Add Schedule Rule"
@@ -64,6 +84,9 @@ const App = (props) => {
     >
       <Form form={form} onFinish={onFinish} autoComplete="off">
         <Row gutter={[8, 2]}>
+          <Form.Item hidden name="id">
+            <input type="text" />
+          </Form.Item>
           <Col xs={24} sm={24}>
             <Form.Item
               label="Rule Name"

@@ -12,6 +12,9 @@ import { useState } from "react";
 dayjs.locale("en");
 
 const AttendanceReports = () => {
+  //
+  const new_attendance = [{}];
+  //
   const currentDate = dayjs();
   const [currentMonth, setCurrentMonth] = useState(currentDate.format("MMMM"));
   const currentYear = currentDate.format("YYYY");
@@ -33,6 +36,7 @@ const AttendanceReports = () => {
   const generateColumns = (current_year, current_month) => {
     const startDate = dayjs(`${current_year}-${current_month}`);
     const endDate = startDate.endOf("month");
+
     const columns = [
       { date: "full_name", label: "Full Name" },
       { date: "id", label: "ID" },
@@ -57,8 +61,54 @@ const AttendanceReports = () => {
 
   const data = [
     {
-      id: { value: "vts-444", label: "VTS-444" },
+      id: { value: "AEU-1", label: "AEU-1" },
       full_name: { value: "Somnak Kalan", label: "Somnak Kalan" },
+      date_join: { value: "20/21/19", label: "20/21/19" },
+
+      6: { value: "al", label: "AL" },
+      8: { value: "h", label: "H" },
+      12: { value: "l", label: "L" },
+      19: { value: "a", label: "A" },
+    },
+    {
+      id: { value: "AEU-2", label: "AEU-2" },
+      full_name: { value: "Chansok Oeun	", label: "Chansok Oeun	" },
+      date_join: { value: "20/21/19", label: "20/21/19" },
+      6: { value: "al", label: "AL" },
+      8: { value: "h", label: "H" },
+      12: { value: "l", label: "L" },
+      19: { value: "a", label: "A" },
+    },
+    {
+      id: { value: "AEU-3", label: "AEU-3" },
+      full_name: { value: "Khy Phat", label: "Khy Phat	" },
+      date_join: { value: "20/21/19", label: "20/21/19" },
+      6: { value: "al", label: "AL" },
+      8: { value: "h", label: "H" },
+      12: { value: "l", label: "L" },
+      19: { value: "a", label: "A" },
+    },
+    {
+      id: { value: "AEU-4", label: "AEU-4" },
+      full_name: { value: "Boreyrothana Oun	", label: "Boreyrothana Oun	" },
+      date_join: { value: "20/21/19", label: "20/21/19" },
+      6: { value: "al", label: "AL" },
+      8: { value: "h", label: "H" },
+      12: { value: "l", label: "L" },
+      19: { value: "a", label: "A" },
+    },
+    {
+      id: { value: "AEU-5", label: "AEU-5" },
+      full_name: { value: "Sreyhon Khim	", label: "Sreyhon Khim	" },
+      date_join: { value: "20/21/19", label: "20/21/19" },
+      6: { value: "al", label: "AL" },
+      8: { value: "h", label: "H" },
+      12: { value: "l", label: "L" },
+      19: { value: "a", label: "A" },
+    },
+    {
+      id: { value: "AEU-6", label: "AEU-6" },
+      full_name: { value: "Huymean Chheng	", label: "SHuymean Chheng	" },
       date_join: { value: "20/21/19", label: "20/21/19" },
       6: { value: "al", label: "AL" },
       8: { value: "h", label: "H" },
@@ -163,7 +213,7 @@ const AttendanceReports = () => {
           </>
         }
       >
-        <div className=" text-white ">
+        <div className=" text-white " style={{ overflowX: "auto" }}>
           <span
             style={{
               paddingLeft: "20px",
@@ -272,7 +322,7 @@ const AttendanceReports = () => {
                           : "1px solid #dddddd",
                       textAlign: "center",
                     }}
-                    colSpan={colIndex === 1 ? 5 : 1}
+                    colSpan={colIndex === 1 ? 4 : 1}
                   >
                     {colIndex === 1 ? "Day" : colIndex === 1 ? "" : column.day}
                   </td>
@@ -316,7 +366,11 @@ const AttendanceReports = () => {
                             : colIndex !== 0 &&
                               colIndex !== 1 &&
                               colIndex !== 2 &&
-                              column.date < 19
+                              column.date <= currentDate.format("D") &&
+                              row_data[column.date]?.value !== "a" &&
+                              row_data[column.date]?.value !== "l" &&
+                              row_data[column.date]?.value !== "h" &&
+                              row_data[column.date]?.value !== "al"
                             ? "white"
                             : "",
                       }}
@@ -324,7 +378,11 @@ const AttendanceReports = () => {
                     >
                       {row_data[column.date] ? (
                         row_data[column.date]?.label
-                      ) : column.date < 19 ? (
+                      ) : column.date <= currentDate.format("D") &&
+                        row_data[column.date]?.value !== "a" &&
+                        row_data[column.date]?.value !== "l" &&
+                        row_data[column.date]?.value !== "h" &&
+                        row_data[column.date]?.value !== "al" ? (
                         <CheckSquareOutlined />
                       ) : (
                         ""

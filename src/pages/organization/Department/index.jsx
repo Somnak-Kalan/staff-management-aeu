@@ -1,10 +1,20 @@
-import { Card, Row, Col, Table, Button, message, Popconfirm } from "antd";
+import {
+  Card,
+  Row,
+  Col,
+  Table,
+  Button,
+  message,
+  Popconfirm,
+  Breadcrumb,
+} from "antd";
 import { useEffect, useState } from "react";
 import {
   PlusCircleOutlined,
   DeleteOutlined,
   FormOutlined,
   QuestionCircleOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 //form
 import AddDepartmentForm from "./AddDepartment";
@@ -55,24 +65,102 @@ const Staff = () => {
   useEffect(() => {
     Get_Department();
   }, []);
+  const default_data = [
+    {
+      id: 0,
+      department_name: "Accounting",
+      university_name: "AEU University",
+      description: "Manage calculate spend.",
+    },
+    {
+      id: 1,
+      department_name: "Information Technology",
+      university_name: "AEU University",
+      description: "Support and Manage system",
+    },
+    {
+      id: 2,
+      department_name: "Finance",
+      university_name: "AEU University",
+      description: "Manage whole school spend in & out",
+    },
+    {
+      id: 3,
+      department_name: "Education",
+      university_name: "AEU University",
+      description: "Teaching student",
+    },
+    {
+      id: 4,
+      department_name: "Human Resource",
+      university_name: "AEU University",
+      description: "Manage student, manage staff",
+    },
+    {
+      id: 5,
+      department_name: "Science and Technology",
+      university_name: "AEU University",
+      description:
+        "Nowadays, technology becomes highly modernized, but it seems to be slow if it will be compared in future",
+    },
+    {
+      id: 6,
+      department_name: "Law and Political Science",
+      university_name: "AEU University",
+      description:
+        "To display the quality and value of competitive education in order to achieve a great success in a job for triumphant students after their graduation.",
+    },
+    {
+      id: 7,
+      department_name: "Social Sciences and Economics",
+      university_name: "AEU University",
+      description:
+        "The Faculty of Social Sciences and Economics comprises of the following Schools which are based at the Canterbury campus: Anthropology and Conservation, Economics, Business, Law, Politics and International Relations, Psychology, and Social Policy, Sociology and Social Research",
+    },
+    {
+      id: 8,
+      department_name: "Arts, Humanities and Languages",
+      university_name: "AEU University",
+      description:
+        "The Arts and Humanities are at the heart of a real education",
+    },
+    {
+      id: 9,
+      department_name: "Business Administration and Tourism",
+      university_name: "AEU University",
+      description:
+        "The Faculty has a strong will to push students to achieving their goal as the best qualified human resources both in the business and tourism areas",
+    },
+  ];
+  useEffect(() => {
+    let existingData = localStorage.getItem("department");
+    existingData = existingData ? JSON.parse(existingData) : [];
 
+    const notExisting = default_data.filter((el) => {
+      return !existingData.some((existing) => existing.id === el.id);
+    });
+    const updatedData = [...existingData];
+    if (notExisting.length > 0) {
+      Array.isArray(notExisting) &&
+        notExisting.map((el) => {
+          updatedData.push(el);
+        });
+    }
+    localStorage.setItem("department", JSON.stringify(updatedData));
+  }, []);
   //end notification
   const data = department_list;
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      render: (_, recorder, index) => index + 1,
-    },
-    {
       title: "No",
       dataIndex: "no",
       key: "no",
+      width: 50,
+      align: "center",
       render: (_, recorder, index) => index + 1,
     },
     {
-      title: "Department",
+      title: "Department/ Faculties",
       dataIndex: "department_name",
       key: "department_name",
     },
@@ -85,12 +173,20 @@ const Staff = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (text) => {
+        if (text.length > 70) {
+          return text.substring(0, 70) + "...";
+        }
+        return text;
+      },
     },
 
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
+      width: 100,
+      align: "center",
       render: (_, recorder) => (
         <>
           <span
@@ -122,49 +218,68 @@ const Staff = () => {
     },
   ];
   return (
-    <Row>
-      <Col sm={24}>
-        <Card
-          title="Department"
-          extra={
-            <Button type="primary" onClick={() => setAddOpen(true)}>
-              <PlusCircleOutlined />
-              Add Department
-            </Button>
-          }
-        >
-          {/* add department */}
-          <AddDepartmentForm
-            open={add_open}
-            setOpen={setAddOpen}
-            success={success}
-            warning={warning}
-            Get_Department={Get_Department}
-          />
+    <>
+      <Breadcrumb
+        style={{ position: "fixed", top: "80px", left: "250px" }}
+        items={[
+          {
+            title: (
+              <HomeOutlined
+                onClick={() => {
+                  navigate("/");
+                }}
+              />
+            ),
+          },
+          {
+            title: "Department",
+          },
+        ]}
+      />
+      <Row>
+        <Col sm={24}>
+          <Card
+            title="Department"
+            extra={
+              <Button type="primary" onClick={() => setAddOpen(true)}>
+                <PlusCircleOutlined />
+                Add Department
+              </Button>
+            }
+          >
+            {/* add department */}
+            <AddDepartmentForm
+              open={add_open}
+              setOpen={setAddOpen}
+              success={success}
+              warning={warning}
+              Get_Department={Get_Department}
+            />
 
-          {/* end add department */}
-          <UpdateDepartmentForm
-            open={update_open}
-            setOpen={setUpdateOpen}
-            success={success}
-            warning={warning}
-            Get_Department={Get_Department}
-            props_data={props_data}
-          />
-          {/* update department */}
+            {/* end add department */}
+            <UpdateDepartmentForm
+              open={update_open}
+              setOpen={setUpdateOpen}
+              success={success}
+              warning={warning}
+              Get_Department={Get_Department}
+              props_data={props_data}
+            />
+            {/* update department */}
 
-          {/* end update department */}
-          <Table
-            size="small"
-            scroll={{ x: "max-content" }}
-            columns={columns}
-            bordered
-            loading={table_loading}
-            dataSource={data}
-          />
-        </Card>
-      </Col>
-    </Row>
+            {/* end update department */}
+            <Table
+              size="small"
+              scroll={{ x: "max-content" }}
+              columns={columns}
+              bordered
+              loading={table_loading}
+              dataSource={data}
+            />
+          </Card>
+        </Col>
+      </Row>
+    </>
   );
 };
 

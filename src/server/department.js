@@ -28,7 +28,6 @@ const Add_Department = async (newData) => {
 //end add department
 //update department
 const Update_Department = async (data) => {
-  console.log(data, "back end");
   const id = data.id;
   const newData = data;
   let existingData = localStorage.getItem("department");

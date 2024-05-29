@@ -12,9 +12,9 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { Add_Shift } from "../../../server/staffSchedule/shift";
+// import { Add_Shift } from "../../../server/staffSchedule/shift";
 const CreateForm = (props) => {
-  const { open, setOpen, success, warning, Get_Shift } = props;
+  const { open, setOpen, success, warning, Get_Shift, propData } = props;
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
   const [form] = Form.useForm();
@@ -53,21 +53,21 @@ const CreateForm = (props) => {
               start: dayjs(
                 monday_morning ? monday_morning[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 monday_morning ? monday_morning[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
             afternoon: {
               start: dayjs(
                 monday_afternoon ? monday_afternoon[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 monday_afternoon ? monday_afternoon[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
           },
 
@@ -76,21 +76,21 @@ const CreateForm = (props) => {
               start: dayjs(
                 tuesday_morning ? tuesday_morning[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 tuesday_morning ? tuesday_morning[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
             afternoon: {
               start: dayjs(
                 tuesday_afternoon ? tuesday_afternoon[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 tuesday_afternoon ? tuesday_afternoon[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
           },
           wednesday: {
@@ -98,21 +98,21 @@ const CreateForm = (props) => {
               start: dayjs(
                 wednesday_morning ? wednesday_morning[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 wednesday_morning ? wednesday_morning[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
             afternoon: {
               start: dayjs(
                 wednesday_afternoon ? wednesday_afternoon[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 wednesday_afternoon ? wednesday_afternoon[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
           },
           thursday: {
@@ -120,21 +120,21 @@ const CreateForm = (props) => {
               start: dayjs(
                 thursday_morning ? thursday_morning[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 thursday_morning ? thursday_morning[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
             afternoon: {
               start: dayjs(
                 thursday_afternoon ? thursday_afternoon[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 thursday_afternoon ? thursday_afternoon[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
           },
           friday: {
@@ -142,21 +142,21 @@ const CreateForm = (props) => {
               start: dayjs(
                 friday_morning ? friday_morning[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 friday_morning ? friday_morning[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
             afternoon: {
               start: dayjs(
                 friday_afternoon ? friday_afternoon[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 friday_afternoon ? friday_afternoon[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
           },
           saturday: {
@@ -164,21 +164,21 @@ const CreateForm = (props) => {
               start: dayjs(
                 saturday_morning ? saturday_morning[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 saturday_morning ? saturday_morning[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
             afternoon: {
               start: dayjs(
                 saturday_afternoon ? saturday_afternoon[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 saturday_afternoon ? saturday_afternoon[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
           },
           sunday: {
@@ -186,31 +186,31 @@ const CreateForm = (props) => {
               start: dayjs(
                 sunday_morning ? sunday_morning[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 sunday_morning ? sunday_morning[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
             afternoon: {
               start: dayjs(
                 sunday_afternoon ? sunday_afternoon[0] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
               end: dayjs(
                 sunday_afternoon ? sunday_afternoon[1] : null,
                 "HH:mm"
-              ).format("HH:mm A"),
+              ).format("HH:mm"),
             },
           },
         },
       };
-      Add_Shift(doc).then(() => {
-        success({ content: "Add Success" });
-        Get_Shift();
-        setOpen(false);
-        form.resetFields();
-      });
+      //   Add_Shift(doc).then(() => {
+      //     success({ content: "Add Success" });
+      //     Get_Shift();
+      //     setOpen(false);
+      //     form.resetFields();
+      //   });
     } catch {
       warning({ content: "Add Fail" });
     }
@@ -221,6 +221,266 @@ const CreateForm = (props) => {
       attendance_rule_name: "15 min",
     },
   ];
+  useEffect(() => {
+    const data = [
+      {
+        name: "monday",
+        morning: {
+          start:
+            //   dayjs(
+            propData?.attendance?.monday?.morning?.start,
+          //     "HH:mm"
+          //   ).isValid()
+          // ? dayjs(propData?.attendance?.monday?.morning?.start, "HH:mm")
+          // : "",
+          end:
+            //   dayjs(
+            propData?.attendance?.monday?.morning?.end,
+          //     "HH:mm"
+          //   ).isValid()
+          //     ? dayjs(propData?.attendance?.monday?.morning?.end, "HH:mm")
+          //     : "",
+        },
+        // afternoon: {
+        //   start: dayjs(
+        //     propData?.attendance?.monday?.afternoon?.start,
+        //     "HH:mm"
+        //   ).isValid()
+        //     ? dayjs(propData?.attendance?.monday?.afternoon?.start, "HH:mm")
+        //     : "",
+        //   end: dayjs(
+        //     propData?.attendance?.monday?.afternoon?.end,
+        //     "HH:mm"
+        //   ).isValid()
+        //     ? dayjs(propData?.attendance?.monday?.afternoon?.end, "HH:mm")
+        //     : "",
+        // },
+      },
+      //   {
+      //     name: "tuesday",
+      //     morning: {
+      //       start: dayjs(
+      //         propData?.attendance?.tuesday?.morning?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.tuesday?.morning?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.tuesday?.morning?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.tuesday?.morning?.end, "HH:mm")
+      //         : "",
+      //     },
+      //     afternoon: {
+      //       start: dayjs(
+      //         propData?.attendance?.tuesday?.afternoon?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.tuesday?.afternoon?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.tuesday?.afternoon?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.tuesday?.afternoon?.end, "HH:mm")
+      //         : "",
+      //     },
+      //   },
+      //   {
+      //     name: "wednesday",
+      //     morning: {
+      //       start: dayjs(
+      //         propData?.attendance?.wednesday?.morning?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.wednesday?.morning?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.wednesday?.morning?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.wednesday?.morning?.end, "HH:mm")
+      //         : "",
+      //     },
+      //     afternoon: {
+      //       start: dayjs(
+      //         propData?.attendance?.wednesday?.afternoon?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.wednesday?.afternoon?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.wednesday?.afternoon?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.wednesday?.afternoon?.end, "HH:mm")
+      //         : "",
+      //     },
+      //   },
+      //   {
+      //     name: "thursday",
+      //     morning: {
+      //       start: dayjs(
+      //         propData?.attendance?.thursday?.morning?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.thursday?.morning?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.thursday?.morning?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.thursday?.morning?.end, "HH:mm")
+      //         : "",
+      //     },
+      //     afternoon: {
+      //       start: dayjs(
+      //         propData?.attendance?.thursday?.afternoon?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.thursday?.afternoon?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.thursday?.afternoon?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.thursday?.afternoon?.end, "HH:mm")
+      //         : "",
+      //     },
+      //   },
+      //   {
+      //     name: "friday",
+      //     morning: {
+      //       start: dayjs(
+      //         propData?.attendance?.friday?.morning?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.friday?.morning?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.friday?.morning?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.friday?.morning?.end, "HH:mm")
+      //         : "",
+      //     },
+      //     afternoon: {
+      //       start: dayjs(
+      //         propData?.attendance?.friday?.afternoon?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.friday?.afternoon?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.friday?.afternoon?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.friday?.afternoon?.end, "HH:mm")
+      //         : "",
+      //     },
+      //   },
+      //   {
+      //     name: "saturday",
+      //     morning: {
+      //       start: dayjs(
+      //         propData?.attendance?.saturday?.morning?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.saturday?.morning?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.saturday?.morning?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.saturday?.morning?.end, "HH:mm")
+      //         : "",
+      //     },
+      //     afternoon: {
+      //       start: dayjs(
+      //         propData?.attendance?.saturday?.afternoon?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.saturday?.afternoon?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.saturday?.afternoon?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.saturday?.afternoon?.end, "HH:mm")
+      //         : "",
+      //     },
+      //   },
+      //   {
+      //     name: "sunday",
+      //     morning: {
+      //       start: dayjs(
+      //         propData?.attendance?.sunday?.morning?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.sunday?.morning?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.sunday?.morning?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.sunday?.morning?.end, "HH:mm")
+      //         : "",
+      //     },
+      //     afternoon: {
+      //       start: dayjs(
+      //         propData?.attendance?.sunday?.afternoon?.start,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.sunday?.afternoon?.start, "HH:mm")
+      //         : "",
+      //       end: dayjs(
+      //         propData?.attendance?.sunday?.afternoon?.end,
+      //         "HH:mm"
+      //       ).isValid()
+      //         ? dayjs(propData?.attendance?.sunday?.afternoon?.end, "HH:mm")
+      //         : "",
+      //     },
+      //   },
+    ];
+    // Combine all days into a single object for setFieldsValue
+    const fieldsValue = data.reduce((acc, el) => {
+      const isInvalidMorningStart = el.morning.start.toString() === "";
+      const isInvalidAfternoonStart = el.afternoon.start.toString() === "";
+      const isInvalidMorningEnd = el.morning.end.toString() === "";
+      const isInvalidAfternoonEnd = el.afternoon.end.toString() === "";
+
+      acc[`id`] = propData.id;
+      acc[`attendance_rule_id`] = propData?.attendance_rule_ids;
+      acc[`shift_name`] = propData.shift_name;
+      acc[`${el.name}_morning`] = [el.morning?.start, el.morning?.end];
+      acc[`${el.name}_afternoon`] = [el.afternoon?.start, el.afternoon?.end];
+      acc[el.name] =
+        isInvalidMorningStart &&
+        isInvalidAfternoonStart &&
+        isInvalidMorningEnd &&
+        isInvalidAfternoonEnd
+          ? false
+          : true;
+      return acc;
+    }, {});
+
+    // Update checkDay state
+    const updatedCheckDay = data.reduce((acc, el) => {
+      acc[el.name] =
+        el.morning.start.toString() === "" &&
+        el.afternoon.start.toString() === "" &&
+        el.morning.end.toString() === "" &&
+        el.afternoon.end.toString() === ""
+          ? false
+          : true;
+
+      return acc;
+    }, {});
+    // console.log(updatedCheckDay, ' test now')
+    setCheckDay(updatedCheckDay);
+    form.setFieldsValue(fieldsValue);
+  }, [form, propData]);
   const [checkDay, setCheckDay] = useState({
     monday: false,
     tuesday: false,

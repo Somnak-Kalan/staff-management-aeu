@@ -2,12 +2,21 @@ import { Card, Modal, Tabs, Button, Form, message } from "antd";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import ApplyShiftToDept from "./ApplyShiftToDept";
 import ApplyShiftToEmployee from "./ApplyShiftToEmployee";
+import { Fetch_Department_Option } from "../../../server/options/department";
+import { Fetch_Shift_Opt } from "../../../server/options/shift";
+import { useEffect, useState } from "react";
 const ApplyShift = (props) => {
-  const { open, setOpen } = props;
+  const { open, setOpen, Get_Shift } = props;
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
-  const [form_dept] = Form.useForm();
-  const [form_ee] = Form.useForm();
+  const [ee_form] = Form.useForm();
+  const [dept_form] = Form.useForm();
+  //variable
+  const [department_otp, setDepartmentOpt] = useState([]);
+  const [shift, setShift] = useState([]);
+  const [employee, setEmployee] = useState([]);
+
+  //end variable
   //notification
   const success = ({ content }) => {
     message.success({
@@ -19,14 +28,20 @@ const ApplyShift = (props) => {
       content: content,
     });
   };
-  const onFinish = async (form) => {
-    try {
-      (await form_dept.validateFields()) || (await form_ee.validateFields());
-      success({ content: "Add Success" });
-    } catch {
-      warning({ content: "Add fail" });
-    }
+  const Get_Department_Option = () => {
+    Fetch_Department_Option().then((res) => {
+      setDepartmentOpt(res);
+    });
   };
+  const Get_Shift_Opt = () => {
+    Fetch_Shift_Opt().then((res) => {
+      setShift(res);
+    });
+  };
+  useEffect(() => {
+    Get_Department_Option();
+  }, []);
+
   //end notification
   /*-----------------Function Modal--------------------*/
 
@@ -36,10 +51,15 @@ const ApplyShift = (props) => {
       label: "Apply Shift  to Department",
       children: (
         <ApplyShiftToDept
-          form={form_dept}
+          form={dept_form}
           setOpen={setOpen}
           success={success}
           warning={warning}
+          shift={shift}
+          setShift={setShift}
+          Get_Shift_Opt={Get_Shift_Opt}
+          department_otp={department_otp}
+          Get_Shift={Get_Shift}
         />
       ),
     },
@@ -48,10 +68,15 @@ const ApplyShift = (props) => {
       label: "Apply And Add New Shift  to employee",
       children: (
         <ApplyShiftToEmployee
-          form={form_ee}
+          form={ee_form}
           setOpen={setOpen}
           success={success}
           warning={warning}
+          Get_Shift={Get_Shift}
+          department_otp={department_otp}
+          shift={shift}
+          setShift={setShift}
+          Get_Shift_Opt={Get_Shift_Opt}
         />
       ),
     },
@@ -66,41 +91,24 @@ const ApplyShift = (props) => {
         onCancelText="Cancel"
         onOk={handleOk}
         onCancel={handleCancel}
-        footer={
-          <div>
-            <Button type="primary" onClick={() => onFinish()}>
-              Save
-            </Button>
-          </div>
-        }
+        footer={null}
         width={"48vw"}
-        closable={false}
+        closable={true}
       >
-        <Card
-          title="Apply Schedule "
-          extra={
-            <CloseCircleOutlined
-              onClick={() => on_close_modal()}
-              className="cursor-pointer"
-              style={{ fontSize: "20px", color: "red" }}
-            />
-          }
-        >
-          <div>
-            {/* ------------------------------ */}
-            {/* ------your code here---------- *}
+        <div>
+          {/* ------------------------------ */}
+          {/* ------your code here---------- *}
               {/* ------------------------------ */}
-            <Tabs
-              defaultActiveKey="1"
-              items={items}
-              // style={{ width: '650px' }}
-            />
+          <Tabs
+            defaultActiveKey="1"
+            items={items}
+            // style={{ width: '650px' }}
+          />
 
-            {/* ------------------------------ */}
-            {/* ------end your code here---------- */}
-            {/* ------------------------------ */}
-          </div>
-        </Card>
+          {/* ------------------------------ */}
+          {/* ------end your code here---------- */}
+          {/* ------------------------------ */}
+        </div>
       </Modal>
     </>
   );

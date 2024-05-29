@@ -42,6 +42,9 @@ export default function App() {
     if (storedLoggedIn === "false" && window.location.pathname !== "/login") {
       window.location.href = "/login";
     }
+    if (storedLoggedIn === "true" && window.location.pathname === "/") {
+      window.location.href = "/dashboard";
+    }
     if (storedLoggedIn === null || storedLoggedIn === undefined) {
       window.location.href = "/login";
       localStorage.setItem("isLoggedIn", isLoggedIn);

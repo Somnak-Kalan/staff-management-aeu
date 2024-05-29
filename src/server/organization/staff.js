@@ -1,3 +1,5 @@
+import { Empty } from "antd";
+
 //fetch staff
 const Fetch_Staff = () => {
   let existingData = localStorage.getItem("staff");
@@ -17,14 +19,17 @@ const Fetch_Staff = () => {
       const company = companyData.find(
         (company) => company.employee_id === employee.id
       );
+
       const departments = departmentData.find(
-        (dep) => dep.id === employee.company?.department_id
+        (dep) => dep.id === company?.department_id
       );
+
       const position = positionData.find(
-        (pos) => pos.id === employee.company?.position_id
+        (pos) => pos.id === company?.position_id
       );
+
       const subject = subjectData.find(
-        (type) => type.id === employee.company?.subject_id
+        (type) => type.id === company?.subject_id
       );
       return { ...employee, company, departments, position, subject };
     });

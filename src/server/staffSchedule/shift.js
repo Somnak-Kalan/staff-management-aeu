@@ -14,13 +14,14 @@ const Fetch_Shift = () => {
 //add shift
 
 const Add_Shift = async (newData) => {
+  console.log(newData, "inside");
   let existingData = localStorage.getItem("shift");
   existingData = existingData ? JSON.parse(existingData) : [];
   const new_data = {
     id: existingData.length,
     shift_name: newData.shift_name,
-    university_name: newData.university_name,
-    description: newData.description,
+    attendance_rule_ids: newData.attendance_rule_ids,
+    attendance: newData.attendance,
   };
   const updatedData = [...existingData, new_data];
   localStorage.setItem("shift", JSON.stringify(updatedData));
@@ -28,7 +29,6 @@ const Add_Shift = async (newData) => {
 //end add shift
 //update shift
 const Update_Shift = async (data) => {
-  console.log(data, "back end");
   const id = data.id;
   const newData = data;
   let existingData = localStorage.getItem("shift");
