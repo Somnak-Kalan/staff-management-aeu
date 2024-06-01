@@ -70,7 +70,7 @@ const Staff = () => {
   //useEffect
   useEffect(() => {
     Get_Leave_Type();
-  }, []);
+  }, [window.location.pathname]);
   //end useEffect
   const default_data = [
     {

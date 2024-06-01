@@ -88,7 +88,7 @@ const Position = () => {
   }, [update_open]);
   useEffect(() => {
     Get_Position();
-  }, []);
+  }, [window.location.pathname]);
   const default_data = [
     {
       id: 0,

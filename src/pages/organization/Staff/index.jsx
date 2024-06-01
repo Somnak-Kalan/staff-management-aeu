@@ -61,7 +61,7 @@ const Staff = () => {
   //useEffect
   useEffect(() => {
     Get_Staff_Info();
-  }, []);
+  }, [window.location.pathname]);
   //end useEffect
   const default_data = [
     {

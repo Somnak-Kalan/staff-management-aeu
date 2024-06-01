@@ -41,7 +41,7 @@ const DashboardPages = () => {
     Get_Amount_Department();
     Get_Amount_Position();
     Get_Amount_Subject();
-  }, []);
+  }, [window.location.pathname]);
   //end useEffect
   return (
     <>

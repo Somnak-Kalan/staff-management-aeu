@@ -65,7 +65,7 @@ const EventPage = () => {
   //useEffect
   useEffect(() => {
     Get_Event();
-  }, []);
+  }, [window.location.pathname]);
   //end useEffect
   const default_data = [
     {

@@ -72,7 +72,7 @@ const Staff = () => {
   //useEffect
   useEffect(() => {
     Get_Holiday();
-  }, []);
+  }, [window.location.pathname]);
   //end useEffect
   const default_data = [
     {

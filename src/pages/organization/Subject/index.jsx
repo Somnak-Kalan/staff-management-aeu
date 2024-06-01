@@ -72,7 +72,7 @@ const Staff = () => {
   //useEffect
   useEffect(() => {
     Get_Subjects();
-  }, []);
+  }, [window.location.pathname]);
   //end useEffect'
   const default_data = [
     {

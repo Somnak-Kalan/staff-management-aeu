@@ -39,7 +39,7 @@ const Staff = () => {
   };
   useEffect(() => {
     Get_Request_Leave();
-  }, []);
+  }, [window.location.pathname]);
   //
   const default_data = [
     {

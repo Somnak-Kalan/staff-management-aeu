@@ -65,7 +65,7 @@ const Staff = () => {
 
   useEffect(() => {
     Get_Department();
-  }, []);
+  }, [window.location.pathname]);
   const default_data = [
     {
       id: 0,
