@@ -234,16 +234,16 @@ const Staff = () => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (_, recorder) => (
-        <>
-          <span
-            onClick={() => on_Get_Data_Record(recorder)}
-            style={{ cursor: "pointer", marginLeft: "2px", marginRight: "2px" }}
-          >
-            <FormOutlined style={{ color: "blue", fontSize: "15px" }} />
-          </span>
-        </>
-      ),
+      // render: (_, recorder) => (
+      //   <>
+      //     <span
+      //       onClick={() => on_Get_Data_Record(recorder)}
+      //       style={{ cursor: "pointer", marginLeft: "2px", marginRight: "2px" }}
+      //     >
+      //       <FormOutlined style={{ color: "blue", fontSize: "15px" }} />
+      //     </span>
+      //   </>
+      // ),
     },
   ];
   return (
