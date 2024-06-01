@@ -104,7 +104,7 @@ const EventPage = () => {
         });
     }
     localStorage.setItem("event", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   const data = events;
   const columns = [
     {

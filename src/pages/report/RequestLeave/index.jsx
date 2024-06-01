@@ -143,7 +143,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("request_leave", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   //end notification
   const data = request_leave || [];
   const columns = [

@@ -99,7 +99,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("apply_to_ee", JSON.stringify(updatedData_ee));
-  }, []);
+  }, [window.location.pathname]);
   const data = list_data_shift;
   const columns = [
     {

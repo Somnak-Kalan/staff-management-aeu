@@ -286,7 +286,7 @@ const Position = () => {
         });
     }
     localStorage.setItem("position", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   const data = position;
   const columns = [
     {

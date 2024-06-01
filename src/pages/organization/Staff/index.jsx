@@ -357,7 +357,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("company", JSON.stringify(update_com_existing));
-  }, []);
+  }, [window.location.pathname]);
   const data = staff ? staff : [];
   const columns = [
     {

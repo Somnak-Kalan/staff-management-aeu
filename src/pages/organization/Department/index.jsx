@@ -148,7 +148,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("department", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   //end notification
   const data = department_list;
   const columns = [

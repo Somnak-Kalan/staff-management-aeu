@@ -127,7 +127,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("holiday", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   const data = holiday;
   const columns = [
     {

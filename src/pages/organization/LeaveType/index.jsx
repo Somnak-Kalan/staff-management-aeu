@@ -107,7 +107,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("leave_type", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   const data = leave_type;
   const columns = [
     {

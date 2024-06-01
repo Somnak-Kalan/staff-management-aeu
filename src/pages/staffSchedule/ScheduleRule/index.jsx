@@ -104,7 +104,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("schedule_rule", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   //
   const data = schedule_rule;
   const columns = [

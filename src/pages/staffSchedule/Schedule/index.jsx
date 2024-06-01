@@ -262,7 +262,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("shift", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   //set default data
 
   const data = shift;

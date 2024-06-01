@@ -163,7 +163,7 @@ const Staff = () => {
         });
     }
     localStorage.setItem("subject", JSON.stringify(updatedData));
-  }, []);
+  }, [window.location.pathname]);
   const data = subject;
   const columns = [
     {
