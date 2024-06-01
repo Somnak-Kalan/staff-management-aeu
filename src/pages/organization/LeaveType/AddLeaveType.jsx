@@ -2,13 +2,17 @@
 import { Form, Input, Row, Col, Modal, Select, Button } from "antd";
 const { TextArea } = Input;
 import { Add_Leave_Type } from "../../../server/organization/leavetype";
+import { useState } from "react";
 const App = (props) => {
   const { open, setOpen, success, warning, Get_Leave_Type } = props;
   const [form] = Form.useForm();
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
+  const [loading, setLoading] = useState(false);
   //form
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -22,6 +26,8 @@ const App = (props) => {
       Add_Leave_Type(doc).then((res) => {
         Get_Leave_Type();
         setOpen(false);
+        setLoading(false);
+        form.resetFields();
         success({ content: "Add Success" });
       });
     } catch {
@@ -30,7 +36,7 @@ const App = (props) => {
   };
 
   //end upload image
-  return ( 
+  return (
     <Modal
       title="Add Leave Type"
       open={open}
@@ -39,7 +45,7 @@ const App = (props) => {
       // width="65vw"
       footer={
         <div>
-          <Button type="primary" onClick={() => onFinish()}>
+          <Button loading={loading} type="primary" onClick={() => onFinish()}>
             Save
           </Button>
         </div>

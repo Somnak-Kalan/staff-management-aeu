@@ -1,15 +1,19 @@
 /* eslint-disable react/prop-types */
 import { Form, Input, Row, Col, Modal, Button } from "antd";
 import { Update_Subject } from "../../../server/organization/subjects";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 const { TextArea } = Input;
 const AddSubject = (props) => {
   const { open, setOpen, success, warning, Get_Subjects, props_data } = props;
   const [form] = Form.useForm();
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
+  const [loading, setLoading] = useState(false);
   //form
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
+
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -22,11 +26,12 @@ const AddSubject = (props) => {
       };
       Update_Subject(doc).then((res) => {
         Get_Subjects();
+        setLoading(false);
         setOpen(false);
         success({ content: "Add Success" });
       });
     } catch {
-      console.log("test");
+      warning({ content: "add fail" });
     }
   };
   useEffect(() => {

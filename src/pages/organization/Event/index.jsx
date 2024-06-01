@@ -21,6 +21,7 @@ import AddEvent from "./AddEvent";
 import UpdateEventForm from "./UpdateEvent";
 //end form
 import { Fetch_Event, Delete_Event } from "../../../server/organization/events";
+import ReadMore from "../../../components/ReadMore";
 const success = ({ content }) => {
   message.success({
     content: content,
@@ -123,12 +124,7 @@ const EventPage = () => {
       title: "description",
       dataIndex: "description",
       key: "description",
-      render: (text) => {
-        if (text.length > 70) {
-          return text.substring(0, 70) + "...";
-        }
-        return text;
-      },
+      render: (text) => <ReadMore text={text} />,
     },
 
     {

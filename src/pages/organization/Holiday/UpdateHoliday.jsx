@@ -2,15 +2,18 @@
 import { Form, Input, Row, Col, Modal, DatePicker, Button } from "antd";
 import { Update_Holiday } from "../../../server/organization/holiday";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const App = (props) => {
   const { open, setOpen, success, warning, Get_Holiday, props_data } = props;
   const [form] = Form.useForm();
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
+  const [loading, setLoading] = useState(false);
   //form
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -27,10 +30,11 @@ const App = (props) => {
       Update_Holiday(doc).then((res) => {
         Get_Holiday();
         setOpen(false);
+        setLoading(false);
         success({ content: "Add Success" });
       });
     } catch {
-      console.log("test");
+      warning({ content: "add fail" });
     }
   };
   useEffect(() => {
@@ -50,7 +54,7 @@ const App = (props) => {
       // width="65vw"
       footer={
         <div>
-          <Button type="primary" onClick={() => onFinish()}>
+          <Button loading={loading} type="primary" onClick={() => onFinish()}>
             Save
           </Button>
         </div>

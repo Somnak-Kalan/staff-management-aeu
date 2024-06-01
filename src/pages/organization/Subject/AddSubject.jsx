@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
 import { Form, Input, Row, Col, Modal, Button } from "antd";
 import { Add_Subject } from "../../../server/organization/subjects";
+import { useState } from "react";
 const { TextArea } = Input;
 const AddSubject = (props) => {
   const { open, setOpen, success, warning, Get_Subjects } = props;
   const [form] = Form.useForm();
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
+  const [loading, setLoading] = useState(false);
   //form
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -20,8 +24,10 @@ const AddSubject = (props) => {
       };
       Add_Subject(doc).then((res) => {
         Get_Subjects();
+        setLoading(false);
         setOpen(false);
         success({ content: "Add Success" });
+        form.resetFields();
       });
     } catch {
       console.log("test");
@@ -36,7 +42,7 @@ const AddSubject = (props) => {
       // width="65vw"
       footer={
         <div>
-          <Button type="primary" onClick={() => onFinish()}>
+          <Button loading={loading} type="primary" onClick={() => onFinish()}>
             Save
           </Button>
         </div>

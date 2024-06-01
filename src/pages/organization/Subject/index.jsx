@@ -21,7 +21,7 @@ import {
   Fetch_Subject,
   Delete_Subject,
 } from "../../../server/organization/subjects";
-
+import ReadMore from "../../../components/ReadMore";
 import AddSubjectForm from "./AddSubject";
 import UpdateSubjectForm from "./UpdateSubject";
 //end form
@@ -184,6 +184,7 @@ const Staff = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (description) => <ReadMore text={description} />,
     },
 
     {

@@ -19,6 +19,7 @@ import {
 //form
 import AddLeaveType from "./AddLeaveType";
 import UpdateLeaveTypeForm from "./UpdateLeaveType";
+import ReadMore from "../../../components/ReadMore";
 //end form
 const success = ({ content }) => {
   message.success({
@@ -132,6 +133,7 @@ const Staff = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (description) => <ReadMore text={description} />,
     },
 
     {

@@ -14,9 +14,11 @@ const App = (props) => {
   const [is_change_start_date, setIsChangeStartDate] = useState(false);
   const [is_change_end_date, setIsChangeEndDate] = useState(false);
   const [amount_day, setAmountDay] = useState();
-  console.log(amount_day, "test");
+  const [loading, setLoading] = useState(false);
   //form
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -35,6 +37,7 @@ const App = (props) => {
       Update_Event(doc).then((res) => {
         Get_Event();
         setOpen(false);
+        setLoading(false);
         success({ content: "Update Success" });
       });
     } catch {
@@ -115,7 +118,7 @@ const App = (props) => {
       onCancel={handleCancel}
       footer={
         <div>
-          <Button type="primary" onClick={() => onFinish()}>
+          <Button loading={loading} type="primary" onClick={() => onFinish()}>
             Save
           </Button>
         </div>

@@ -25,6 +25,7 @@ const MainStaff = (props) => {
   const [leave_type, setLeaveType] = useState([]);
   const [position, setPosition] = useState([]);
   const [subject, setSubject] = useState([]);
+  const [loading, setLoading] = useState(false);
   const Get_Department = () => {
     Fetch_Department().then((res) => {
       setDepartment(res);
@@ -64,6 +65,10 @@ const MainStaff = (props) => {
     setCurrent(current - 1);
   };
   const save = async () => {
+    setLoading(true);
+
+    await new Promise((set_second) => setTimeout(set_second, 1000));
+
     try {
       (await form_personal_info.validateFields()) &&
         (await form_company_info.validateFields());
@@ -143,9 +148,13 @@ const MainStaff = (props) => {
       Add_Company(doc_company).then((res) => {
         setCompanyAdd(true);
       });
+      setLoading(false);
       setOpen(false);
       Get_Staff_Info();
       success({ content: "add success" });
+      await new Promise((set_second) => setTimeout(set_second, 500));
+      form_company_info.resetFields();
+      form_personal_info.resetFields();
     } catch (error) {
       console.error("Validation Error:", error);
       warning({ content: "add fail" });
@@ -202,7 +211,7 @@ const MainStaff = (props) => {
               </Button>
             )}
             {current === steps.length - 1 && (
-              <Button type="primary" onClick={() => save()}>
+              <Button loading={loading} type="primary" onClick={() => save()}>
                 Save
               </Button>
             )}

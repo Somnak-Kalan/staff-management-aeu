@@ -12,8 +12,11 @@ const App = (props) => {
   const handleCancel = () => setOpen(false);
   const [option, setOption] = useState("full_day"); // 'full', 'morning', 'afternoon'
   const [amount_day, setAmountDay] = useState();
+  const [loading, setLoading] = useState(false);
   //form
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -31,6 +34,8 @@ const App = (props) => {
       Add_Event(doc).then((res) => {
         Get_Event();
         setOpen(false);
+        setLoading(false);
+        form.resetFields();
         success({ content: "Add Success" });
       });
     } catch {
@@ -94,7 +99,7 @@ const App = (props) => {
       onCancel={handleCancel}
       footer={
         <div>
-          <Button type="primary" onClick={() => onFinish()}>
+          <Button loading={loading} type="primary" onClick={() => onFinish()}>
             Save
           </Button>
         </div>

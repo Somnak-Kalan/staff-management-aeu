@@ -8,11 +8,14 @@ import {
 } from "@ant-design/icons";
 //form
 import AddRequestLeave from "./AddRequestLeave";
+import UpdateRequestLeave from "./UpdateRequestLeave";
 //end form
 import { Fetch_Leave_Type } from "../../../server/report/requestLeave/requestLeave";
 const Staff = () => {
   const [add_open, setAddOpen] = useState(false);
+  const [update_open, setUpdateOpen] = useState(false);
   const [request_leave, setRequestLeave] = useState([]);
+  const [props_data, setPropsData] = useState();
   //notification
   const success = ({ content }) => {
     message.success({
@@ -30,26 +33,119 @@ const Staff = () => {
       setRequestLeave(res);
     });
   };
+  const on_Get_Data_Record = async (data) => {
+    await setUpdateOpen(true);
+    await setPropsData(data);
+  };
   useEffect(() => {
     Get_Request_Leave();
   }, []);
+  //
+  const default_data = [
+    {
+      day_option: "full",
+      department_id: 0,
+      reason: "Sick",
+      from_date: "2024-05-30",
+      leave_type: 0,
+      position_id: 0,
+      staff_code: "AEU-01",
+      staff_id: 0,
+      subject_id: 0,
+      to_date: "2024-05-30",
+      total_day: "1",
+      status: "Accept",
+    },
+    {
+      day_option: "Morning",
+      department_id: 1,
+      reason: "Sick",
+      from_date: "2024-05-30",
+      leave_type: 1,
+      position_id: 1,
+      staff_code: "AEU-02",
+      staff_id: 1,
+      subject_id: 1,
+      to_date: "2024-05-30",
+      total_day: "0.5",
+      status: "Accept",
+    },
+    {
+      day_option: "full",
+      department_id: 2,
+      reason: "Sick",
+      from_date: "2024-05-30",
+      leave_type: 2,
+      position_id: 2,
+      staff_code: "AEU-03",
+      staff_id: 2,
+      subject_id: 2,
+      to_date: "2024-05-30",
+      total_day: "1",
+      status: "Pending",
+    },
+    {
+      day_option: "full",
+      department_id: 3,
+      reason: "Sick",
+      from_date: "2024-05-30",
+      leave_type: 1,
+      position_id: 3,
+      staff_code: "AEU-03",
+      staff_id: 3,
+      subject_id: 3,
+      to_date: "2024-05-30",
+      total_day: "1",
+      status: "Reject",
+    },
+    {
+      day_option: "full",
+      department_id: 4,
+      reason: "Sick",
+      from_date: "2024-05-30",
+      leave_type: 0,
+      position_id: 4,
+      staff_code: "AEU-03",
+      staff_id: 4,
+      subject_id: 4,
+      to_date: "2024-05-30",
+      total_day: "1",
+      status: "Reject",
+    },
+    {
+      day_option: "full",
+      department_id: 5,
+      reason: "Sick",
+      from_date: "2024-05-30",
+      leave_type: 1,
+      position_id: 5,
+      staff_code: "AEU-03",
+      staff_id: 5,
+      subject_id: 6,
+      to_date: "2024-05-30",
+      total_day: "1",
+      status: "Reject",
+    },
+  ];
+
+  useEffect(() => {
+    let existingData = localStorage.getItem("request_leave");
+    existingData = existingData ? JSON.parse(existingData) : [];
+
+    const notExisting = default_data.filter((el) => {
+      return !existingData.some((existing) => existing.id === el.id);
+    });
+    const updatedData = [...existingData];
+    if (notExisting.length > 0) {
+      Array.isArray(notExisting) &&
+        notExisting.map((el) => {
+          updatedData.push(el);
+        });
+    }
+    localStorage.setItem("request_leave", JSON.stringify(updatedData));
+  }, []);
   //end notification
   const data = request_leave || [];
-  // const data = [
-  //   {
-  //     full_name: "somnak kalan",
-  //     employee_no: "V-1",
-  //     department: "Information Technology ",
-  //     position: "Teaching",
-  //     subject: "Javascript ",
-  //     type: "Early ",
-  //     from: "2-5-2024 ",
-  //     to: "2-5-2024",
-  //     day_leave: "1 ",
-  //     reason: "Sick ",
-  //     status: "pending",
-  //   },
-  // ];
   const columns = [
     {
       title: "No",
@@ -138,14 +234,10 @@ const Staff = () => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: (_, recoder) => (
+      render: (_, recorder) => (
         <>
           <span
-            style={{ cursor: "pointer", marginLeft: "2px", marginRight: "2px" }}
-          >
-            <DeleteOutlined style={{ color: "red", fontSize: "15px" }} />
-          </span>
-          <span
+            onClick={() => on_Get_Data_Record(recorder)}
             style={{ cursor: "pointer", marginLeft: "2px", marginRight: "2px" }}
           >
             <FormOutlined style={{ color: "blue", fontSize: "15px" }} />
@@ -193,6 +285,16 @@ const Staff = () => {
               Get_Request_Leave={Get_Request_Leave}
             />
             {/* end add department */}
+            {/* update  */}
+            <UpdateRequestLeave
+              open={update_open}
+              setOpen={setUpdateOpen}
+              success={success}
+              warning={warning}
+              Get_Request_Leave={Get_Request_Leave}
+              props_data={props_data}
+            />
+            {/* end update  */}
             <Table
               size="small"
               scroll={{ x: "max-content" }}

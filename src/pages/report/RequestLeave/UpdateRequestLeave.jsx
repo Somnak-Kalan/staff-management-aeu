@@ -25,7 +25,9 @@ import { Add_Request_Leave } from "../../../server/report/requestLeave/requestLe
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 const App = (props) => {
-  const { open, setOpen, success, warning, Get_Request_Leave } = props;
+  const { open, setOpen, props_data, success, warning, Get_Request_Leave } =
+    props;
+  console.log(props_data, "test");
   const [form] = Form.useForm();
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
@@ -80,17 +82,17 @@ const App = (props) => {
       to_date: dayjs(to_date, "HH:mm").format("HH:mm A"),
       total_day,
     };
-    Add_Request_Leave(doc)
-      .then(() => {
-        setOpen(false);
-        Get_Request_Leave();
-        setLoading(false);
-        form.resetFields();
-        success({ content: "add success" });
-      })
-      .error(() => {
-        warning({ content: "add fail" });
-      });
+    // Add_Request_Leave(doc)
+    //   .then(() => {
+    //     setOpen(false);
+    //     Get_Request_Leave();
+    //     setLoading(false);
+    //     form.resetFields();
+    //     success({ content: "add success" });
+    //   })
+    //   .error(() => {
+    //     warning({ content: "add fail" });
+    //   });
   };
   //form
   const on_Change_Staff = (event) => {
@@ -164,7 +166,55 @@ const App = (props) => {
     setDayOption(option);
     calculateTotalDays(fromDate, toDate, option);
   };
+  useEffect(() => {
+    form.setFieldsValue({
+      ...props_data,
+      from_date: dayjs(props_data?.from_date, "YYYY-MM-DD"),
+      to_date: dayjs(props_data?.to_date, "YYYY-MM-DD"),
+    });
+    const staff_code = process.nextTick;
 
+    Filter_Staff(staff_code)
+      .then((res) => {
+        if (!res) {
+          throw new Error("Staff not found");
+        }
+
+        // Fetch related data based on staff details
+        return Promise.all([
+          Fetch_Company_By_Department_Id(res.departments.id),
+          Fetch_Staff_Otp_Follow_Department(res.id),
+          Filter_Department_By_ID(res.departments.id),
+          Filter_Position_By_ID(res.position.id),
+          Filter_Subject_By_ID(res.subject.id),
+        ]).then(
+          ([
+            res_company,
+            res_staff,
+            res_department,
+            res_position,
+            res_subject,
+          ]) => {
+            setCompany(res_company);
+            setStaff(res_staff);
+            setDepartment(res_department);
+            setPosition(res_position);
+            setSubject(res_subject);
+
+            // Set form values
+            form.setFieldValue("department_id", res.departments?.id);
+            form.setFieldValue("position_id", res.position?.id);
+            form.setFieldValue("subject_id", res.subject?.id);
+            form.setFieldValue("staff_id", res.id);
+
+            console.log(res.departments?.id, "test");
+          }
+        );
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, [form, props_data]);
   //end upload image
   return (
     <Modal

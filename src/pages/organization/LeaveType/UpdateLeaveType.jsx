@@ -10,6 +10,8 @@ const App = (props) => {
   const handleCancel = () => setOpen(false);
   //form
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -25,6 +27,7 @@ const App = (props) => {
       Update_Leave_Type(doc).then((res) => {
         Get_Leave_Type();
         setOpen(false);
+        setLoading(false);
         success({ content: "Update Success" });
       });
     } catch {

@@ -89,7 +89,7 @@ const App = () => {
           "sub3",
           <FundOutlined />,
           [
-            getItem("Attendance"),
+            // getItem("Attendance", "attendance", null, null, null, null),
             getItem(
               "Attendance Report",
               "attendance-report",

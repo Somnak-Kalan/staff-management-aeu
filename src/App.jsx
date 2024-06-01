@@ -17,9 +17,9 @@ import SchedulePage from "./pages/staffSchedule/Schedule/index";
 import ApplyShift from "./pages/staffSchedule/ApplySchedule/index";
 import ApplyScheduleRule from "./pages/staffSchedule/ScheduleRule/index";
 import AttendanceReport from "./pages/report/AttendanceReport/index";
-import AttendanceList from "./pages/report/Attendance/index";
+// import AttendanceList from "./pages/report/Attendance/index";
 import RequestLeave from "./pages/report/RequestLeave/index";
-
+import PageNotFound from "./pages/NotFoundPage";
 // Import other styles
 import "./App";
 import "./styles/table.scss";
@@ -45,6 +45,14 @@ export default function App() {
     if (storedLoggedIn === "true" && window.location.pathname === "/") {
       window.location.href = "/dashboard";
     }
+    if (
+      storedLoggedIn &&
+      (window.location.pathname === "/" ||
+        window.location.pathname === "/login")
+    ) {
+      window.location.href = "/dashboard";
+    }
+
     if (storedLoggedIn === null || storedLoggedIn === undefined) {
       window.location.href = "/login";
       localStorage.setItem("isLoggedIn", isLoggedIn);
@@ -60,9 +68,6 @@ export default function App() {
 
   const handleLogin = (is_login) => {
     if (is_login === true) {
-      setIsLoggedIn(is_login);
-      localStorage.setItem("isLoggedIn", is_login);
-    } else {
       setIsLoggedIn(is_login);
       localStorage.setItem("isLoggedIn", is_login);
     }
@@ -86,8 +91,8 @@ export default function App() {
               <Route path="/apply" element={<ApplyShift />} />
               <Route path="/schedule-rule" element={<ApplyScheduleRule />} />
               <Route path="/attendance-report" element={<AttendanceReport />} />
-              <Route path="/attendance" element={<AttendanceList />} />
               <Route path="/request-leave" element={<RequestLeave />} />
+              <Route path="*" element={<PageNotFound />} />
             </Route>
           ) : (
             <Route path="/login" element={<Login onLogin={handleLogin} />} />

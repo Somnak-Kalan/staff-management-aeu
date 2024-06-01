@@ -19,6 +19,7 @@ import {
 //form
 import AddDepartmentForm from "./AddDepartment";
 import UpdateDepartmentForm from "./UpdateDepartment";
+import ReadMore from "../../../components/ReadMore";
 //end form
 import {
   Fetch_Department,
@@ -173,12 +174,7 @@ const Staff = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (text) => {
-        if (text.length > 70) {
-          return text.substring(0, 70) + "...";
-        }
-        return text;
-      },
+      render: (text) => <ReadMore text={text} />,
     },
 
     {

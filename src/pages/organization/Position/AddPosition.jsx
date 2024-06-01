@@ -1,14 +1,19 @@
 /* eslint-disable react/prop-types */
 import { Form, Input, Row, Col, Modal, Select, Button } from "antd";
 import { Add_Position } from "../../../server/position/position";
+import { useState } from "react";
 
 const App = (props) => {
   const { open, setOpen, success, warning, department, Get_Position } = props;
   const [form] = Form.useForm();
   const handleOk = () => setOpen(false);
   const handleCancel = () => setOpen(false);
+  const [loading, setLoading] = useState(false);
   //form
+
   const onFinish = async () => {
+    setLoading(true);
+    await new Promise((set_second) => setTimeout(set_second, 1000));
     try {
       await form.validateFields();
       const values = form.getFieldsValue();
@@ -22,10 +27,13 @@ const App = (props) => {
       Add_Position(doc).then((res) => {
         Get_Position();
         setOpen(false);
+        setLoading(false);
+        form.resetFields();
         success({ content: "Add Success" });
       });
     } catch {
       console.log("test");
+      warning({ content: "add fail" });
     }
   };
   //end upload image
@@ -38,7 +46,7 @@ const App = (props) => {
       // width="65vw"
       footer={
         <div>
-          <Button type="primary" onClick={() => onFinish()}>
+          <Button loading={loading} type="primary" onClick={() => onFinish()}>
             Save
           </Button>
         </div>
